@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="3.0" id="WsExample">
+  <display-name>WsExample</display-name>
+  <servlet>
+    <servlet-name>WsExampleServlet</servlet-name>
+    <servlet-class>net.igorkromin.WsExampleImpl</servlet-class>
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>WsExampleServlet</servlet-name>
+    <url-pattern>/WsExample</url-pattern>
+  </servlet-mapping>
+</web-app>
