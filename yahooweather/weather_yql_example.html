@@ -1,0 +1,60 @@
+<html>
+	<head>
+		<title>Weather Example</title>
+		<script src="https://code.jquery.com/jquery-2.2.3.min.js"
+			integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo=" 
+			crossorigin="anonymous">
+		</script>
+		<style>
+		.weather { display: none; margin: 1em; border: 2px solid black; width: 100px; text-align: center; border-radius: 4px; }
+		.weather_date { background-color: #000; color: #fff; height: 1.2em; padding: 0.1em; }
+		.weather_temp { display: table; width:100%; height: 1.2em; border-bottom: 1px solid black; }
+		.weather_temp_min { display: table-cell; background-color: #efe; width: 50%; padding: 0.1em; }
+		.weather_temp_max { display: table-cell; background-color: #fee; width: 50%; padding: 0.1em; }
+		.weather_text { font-size: 80%; color: #999; padding: 0.5em; }
+		</style>
+	</head>
+	<body>
+		<script>
+		var url = 'https://query.yahooapis.com/v1/public/yql';
+		var yql = 'select title, units.temperature, item.forecast from weather.forecast where woeid in (select woeid from geo.places where text="Brisbane, Australia") and u = "C" limit 5 | sort(field="item.forecast.date", descending="false");';
+		
+		var iconUrl = 'https://s.yimg.com/zz/combo?a/i/us/we/52/';
+		
+		$.ajax({url: url, data: {format: 'json', q: yql}, method: 'GET', dataType: 'json'})
+			.success(function(data) {
+				if (data.query.count > 0) {
+					jQuery.each(data.query.results.channel, function(idx, result) {
+						console.log(result);
+						var f = result.item.forecast;
+						var u = result.units.temperature;
+						
+						var c = $('#weather').clone();
+						c.find('.weather_date').text(f.date);
+						c.find('.weather_temp_min').text(f.low + u);
+						c.find('.weather_temp_max').text(f.high + u);
+						c.find('.weather_icon').attr('src', iconUrl + f.code + '.gif');
+						c.find('.weather_text').text(f.text);
+						
+						c.css('display', 'inline-block');
+						
+						c.appendTo($('body'));
+					});
+				}
+			}
+		);
+		</script>
+		
+		<!-- Used as a template -->
+		<div id="weather" class="weather">
+			<div class="weather_date">DATE</div>
+			<div class="weather_temp">
+				<div class="weather_temp_min">MIN</div>
+				<div class="weather_temp_max">MAX</div>
+			</div>
+			<img class="weather_icon">
+			<div class="weather_text"></div>
+		</div>
+		
+	</body>
+</html>
