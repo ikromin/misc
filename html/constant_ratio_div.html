@@ -1,0 +1,66 @@
+<html>
+	<head>
+		<title>Constant Ratio Div Example</title>
+		<style>
+			.photo-16x9 {
+				display: inline-block;
+				position: relative;
+				width: 320px;
+			}
+			.photo-16x9:after {
+				padding-top: 56.25%; /* 16:9 aspect */
+				display: block;
+				content: '';
+			}
+			.photo-4x3 {
+				display: inline-block;
+				position: relative;
+				width: 320px;
+			}
+			.photo-4x3:after {
+				padding-top: 75%; /* 4:3 aspect */
+				display: block;
+				content: '';
+			}
+			.photo_clip {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				background-color: #999;
+				overflow-x: hidden;
+				overflow-y: hidden;
+				text-align: center;
+			}
+			.photo_img {
+				width:100%;
+				height:auto;
+				top:50%;
+				transform: translateY(-50%);
+				-ms-transform: translateY(-50%);
+				-webkit-transform: translateY(-50%);
+				left:0;
+				position:absolute;
+			}
+		</style>
+	</head>
+	<body>
+		<p>Original Image</p>
+		<img src="photo.jpg" width="320" height="240">
+		
+		<p>Image in a constant ratio div 16:9 aspect</p>
+		<div class="photo-16x9">
+			<div class="photo_clip">
+				<img src="photo.jpg" class="photo_img" width="320" height="240">
+			</div>
+		</div>
+		
+		<p>Image in a constant ratio div 4:3 aspect</p>
+		<div class="photo-4x3">
+			<div class="photo_clip">
+				<img src="photo.jpg" class="photo_img" width="320" height="240">
+			</div>
+		</div>
+	</body>
+</html>
