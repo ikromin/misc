@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<title>Infinite Scroll Example</title>
+		
+		<!-- jQuery -->
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		
+		<style>
+		body, html {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.content-wrapper {
+			text-align:center;
+			height: 100%;
+			width: 100%;
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
+		}
+		
+		.content-container {
+			width: 100%;
+			max-width: 800px;
+			text-align: left;
+			display: inline-block;
+			background-color: #eee;
+		}
+		
+		.content {
+			display: none;
+			background: silver;
+			padding: 3em;
+			margin: 3em;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="content-wrapper">
+			<div class="content-container">
+				<div style="text-align:center; padding:2em;">Example Infinite Scroll Page</div>
+			</div>
+		</div>
+		
+		<div id="content-template" class="content">Content <span class="content-counter"></span></div>
+		
+		<script>
+			// keep track of how much content has been added, used for ID purposes too
+			contentCounter = 0;
+			canAddContent = true;
+			
+			$(document).ready(function() {
+				var contentContainer = $('.content-container');
+				
+				// first generate some initial content
+				addContent();
+				
+				// add scroll event handler to add more content
+				$('.content-wrapper').scroll(function() {
+					var b = $(this);
+
+					// add more content if the scroll reaches 90% to the bottom of the page
+					if (canAddContent &&
+						(b.scrollTop() + b.height()) / $('.content-container').height() > 0.9) {
+						addContent();
+					}
+				});
+				
+				function addContent() {
+					if (!canAddContent) {
+						return;
+					}
+					
+					canAddContent = false;
+					
+					for (var i = 0; i < 10; i++) {
+						$('#content-template')
+							.clone()
+							.attr('id', contentCounter)
+							.appendTo(contentContainer)
+							.show()
+							.find('.content-counter')
+							.text(contentCounter);
+						contentCounter++;
+					}
+					
+					canAddContent = true;
+				}
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,145 @@
+<html>
+	<head>
+		<title>Infinite Scroll with Google DFP Example</title>
+		
+		<!-- jQuery -->
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		
+		<!-- Google DFP -->
+		<script>
+			var googletag = googletag || {};
+			googletag.cmd = googletag.cmd || [];
+			(function() {
+				var gads = document.createElement('script');
+				gads.async = true;
+				gads.type = 'text/javascript';
+				var useSSL = 'https:' == document.location.protocol;
+				gads.src = (useSSL ? 'https:' : 'http:') +
+				  '//www.googletagservices.com/tag/js/gpt.js';
+				var node = document.getElementsByTagName('script')[0];
+				node.parentNode.insertBefore(gads, node);
+			})();
+		</script>
+		
+		<style>
+		body, html {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		
+		.content-wrapper {
+			text-align:center;
+			height: 100%;
+			width: 100%;
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
+		}
+		
+		.content-container {
+			width: 100%;
+			max-width: 800px;
+			text-align: left;
+			display: inline-block;
+			background-color: #eee;
+		}
+		
+		.content {
+			display: none;
+			background: silver;
+			padding: 3em;
+			margin: 3em;
+		}
+		
+		.dfp-ad-wrapper {
+			display: none;
+			background: #fee;
+			text-align: center;
+			border: 1px solid black;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="content-wrapper">
+			<div class="content-container">
+				<div style="text-align:center; padding:2em;">Example Infinite Scroll with Google DFP Page</div>
+			</div>
+		</div>
+		
+		<div id="content-template" class="content">Content <span class="content-counter"></span></div>
+		
+		<div id="dfp-ad-template" class="dfp-ad-wrapper"><div class="dfp-ad"></div></div>
+		
+		<script>
+			// keep track of how much content has been added, used for ID purposes too
+			contentCounter = 0;
+			canAddContent = true;
+			
+			// Google DFP configuration
+			dfpPublisherId = '99999999';
+			dfpAdUnitCode = 'YourAdUnitCode';
+			
+			$(document).ready(function() {
+				// initialise Google DFP
+				googletag.cmd.push(function() {
+					googletag.pubads().enableSingleRequest();
+					googletag.pubads().disableInitialLoad();
+					googletag.enableServices();
+				});
+				
+				// first generate some initial content
+				addContent();
+				
+				// add scroll event handler to add more content
+				$('.content-wrapper').scroll(function() {
+					var b = $(this);
+
+					// add more content if the scroll reaches 90% to the bottom of the page
+					if (canAddContent &&
+						(b.scrollTop() + b.height()) / $('.content-container').height() > 0.9) {
+						addContent();
+					}
+				});
+			});
+			
+			function addContent() {
+				if (!canAddContent) {
+					return;
+				}
+				
+				canAddContent = false;
+				var contentContainer = $('.content-container');
+				
+				for (var i = 0; i < 10; i++) {
+					$('#content-template')
+						.clone()
+						.attr('id', contentCounter)
+						.appendTo(contentContainer)
+						.show()
+						.find('.content-counter')
+						.text(contentCounter);
+					
+					// place Google DFP ad slot after every 5th content DIV
+					if (contentCounter != 0 && contentCounter % 5 == 0) {
+						var slotId = 'dfp_ad_' + contentCounter;
+						$('#dfp-ad-template')
+							.clone().appendTo(contentContainer).show()
+							.find('.dfp-ad').attr('id', slotId);
+							
+						googletag.cmd.push(function() {
+							var slot = googletag.defineSlot('/' + dfpPublisherId + '/' + dfpAdUnitCode,
+								[728, 90], slotId).addService(googletag.pubads());
+							googletag.display(slotId);
+							googletag.pubads().refresh([slot]);
+						});
+					}
+					
+					contentCounter++;
+				}
+				
+				canAddContent = true;
+			}
+		</script>
+	</body>
+</html>
