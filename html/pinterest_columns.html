@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<title>Pinterest Style Columns Example</title>
+		
+		<style>
+			.content_wrapper {
+				text-align: center;
+			}
+		
+			.content {display: inline-block; width:735px; }
+		
+			.columns {
+				-webkit-column-count: 3;
+				-moz-column-count: 3;
+				column-count: 3;
+				-webkit-column-fill: auto;
+				-moz-column-fill: auto;
+				column-fill: auto;
+			}
+	
+			.pin {
+				-webkit-column-break-inside: avoid;
+				-moz-column-break-inside: avoid;
+				column-break-inside: avoid;
+				padding-bottom: 1em;
+			}
+
+			.pin_content {
+				background-color: #ccc;
+				padding: 0.5em;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="content_wrapper">
+			<div class="content">
+			
+				<!-- With columns -->
+				<h3>With columns</h3>
+				
+				<div class="columns">
+					<div class="pin">
+						<div class="pin_content">First pin content<br/>With two<br/>and three lines</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Second pin content</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Third pin content<br/>With two lines</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Fourth pin content<br/>With two<br/>and three lines</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Fifth pin content<br/>With two<br/>and three<br/>and four lines</div>
+					</div>
+				</div>
+				
+				<!-- Without columns -->
+				<h3>Without columns</h3>
+				
+				<div>
+					<div class="pin">
+						<div class="pin_content">First pin content<br/>With two<br/>and three lines</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Second pin content</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Third pin content<br/>With two lines</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Fourth pin content<br/>With two<br/>and three lines</div>
+					</div>
+					
+					<div class="pin">
+						<div class="pin_content">Fifth pin content<br/>With two<br/>and three<br/>and four lines</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</body>
+</html>
