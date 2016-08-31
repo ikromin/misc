@@ -36,6 +36,7 @@ public abstract class Exercise {
                 }
                 catch (Exception e) {
                     System.err.println("Could not run method: " + method.getName());
+                    e.printStackTrace();
                 }
             }
         }
