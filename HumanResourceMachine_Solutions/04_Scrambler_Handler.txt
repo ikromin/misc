@@ -1,0 +1,16 @@
+# Grab the first TWO things
+# from the INBOX and drop
+# them into the OUTBOX in
+# the reverse order. Repeat
+# until the INBOX is empty.
+
+# Size Challenge  - 7/7
+# Speed Challenge - 21/21
+
+01  inbox
+02  copyto 0
+03  inbox
+04  outbox
+05  copyfrom 0
+06  outbox
+07  jump 01

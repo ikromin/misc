@@ -1,0 +1,14 @@
+# For each two things in the
+# INBOX, add them
+# together, and put the
+# result in the OUTBOX.
+
+# Size Challenge  - 6/6
+# Speed Challenge - 24/24
+
+01  inbox
+02  copyto 0
+03  inbox
+04  add 0
+05  outbox
+06  jump 01

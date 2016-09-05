@@ -1,0 +1,15 @@
+# Ignore the INBOX for
+# now, and just send the
+# following 3 letters to the
+# OUTBOX:
+# B U G
+
+# Size Challenge  - 6/6
+# Speed Challenge - 6/6
+
+01  copyfrom 4
+02  outbox
+03  copyfrom 0
+04  outbox
+05  copyfrom 3
+06  outbox
