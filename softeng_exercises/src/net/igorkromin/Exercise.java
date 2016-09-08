@@ -13,6 +13,10 @@ public abstract class Exercise {
         System.out.println(message);
     }
 
+    public void outl(Object message) {
+        System.out.print(message);
+    }
+
     /**
      * Runs all public methods exposed on the Exercise object
      */
