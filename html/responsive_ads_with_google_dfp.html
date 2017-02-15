@@ -1,0 +1,116 @@
+<!--
+This example is related to the following Blog post:
+
+https://www.igorkromin.net/index.php/2017/02/15/using-google-dfp-with-adsense-on-responsive-pages/
+-->
+<html>
+	<head>
+		<title>Responsive Ads with Google DFP Example</title>
+		
+		<!-- Google DFP -->
+		<script>
+			var googletag = googletag || {};
+			googletag.cmd = googletag.cmd || [];
+			(function() {
+				var gads = document.createElement('script');
+				gads.async = true;
+				gads.type = 'text/javascript';
+				var useSSL = 'https:' == document.location.protocol;
+				gads.src = (useSSL ? 'https:' : 'http:') +
+				  '//www.googletagservices.com/tag/js/gpt.js';
+				var node = document.getElementsByTagName('script')[0];
+				node.parentNode.insertBefore(gads, node);
+			})();
+		</script>
+		
+		<style>
+		body, html {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 20px;
+		}
+		
+		.ad_container {
+			background-color:grey;
+			margin-bottom: 30px;
+		}
+		</style>
+	</head>
+	<body>
+		<div class="ad_container" style=" width: 800px;">
+			<div id="responsive_dfp1" style="background-color:#e5e599;margin: 0 auto;"></div>
+		</div>
+		
+		<div class="ad_container" style="width: 600px;">
+			<div id="responsive_dfp2" style="background-color:#e5e599;margin: 0 auto;"></div>
+		</div>
+		
+		<div class="ad_container" style="width: 400px;">
+			<div id="responsive_dfp3" style="background-color:#e5e599;margin: 0 auto;"></div>
+		</div>
+		
+		<script>
+			// Google DFP configuration
+			dfpPublisherId = '99999999';
+			dfpAdUnitCode = 'YourAdUnitCode';
+			
+			// Configured ad unit sizes (from DFP Inventory console)
+			var dfpSizes = {
+				234: [234, 60],
+				300: [300, 75],
+				320: [320, 50],
+				468: [468, 60],
+				728: [728, 90],
+				970: [970, 90]
+			};
+			
+			// initialise Google DFP, but disable initial ad loading
+			googletag.cmd.push(function() {
+				googletag.pubads().enableSingleRequest();
+				googletag.pubads().disableInitialLoad();
+				googletag.enableServices();
+			});
+			
+			// create example ad slots
+			makeDfpSlot('responsive_dfp1');
+			makeDfpSlot('responsive_dfp2');
+			makeDfpSlot('responsive_dfp3');
+			
+			function makeDfpSlot(slotId) {
+				var slotElement = document.getElementById(slotId);
+				var parentElement = slotElement.parentElement;
+				var parentStyle = getComputedStyle(parentElement);
+				var maxWidth = parseInt(parentStyle.width);
+	
+				// find the most suitable ad width for parent container width
+				var pickedWidth;
+				for (var idx in dfpSizes) {
+					if (idx != undefined && idx <= maxWidth) {
+						if (pickedWidth == undefined) {
+							pickedWidth = idx;
+						}
+						else {
+							if (pickedWidth < idx) {
+								pickedWidth = idx;
+							}
+						}
+					}
+				}
+				
+				// adjust ad container dimensions to ad dimensions
+				var size = dfpSizes[pickedWidth];
+				slotElement.style.width = size[0] + 'px';
+				slotElement.style.height = size[1] + 'px';
+	
+				// create the ad slot and load ad content
+				googletag.cmd.push(function() {
+					var slot = googletag.defineSlot("/" + dfpPublisherId + "/" + dfpAdUnitCode, size, slotId)
+						.addService(googletag.pubads());
+					googletag.display(slotId);
+					googletag.pubads().refresh([slot]);
+				});
+			}
+		</script>
+	</body>
+</html>
