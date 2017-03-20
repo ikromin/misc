@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>ScrollTop test</title>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		
+		<style>
+			div#message {
+				position: fixed;
+				right: 0;
+				top: 0;
+				color: red;
+				font-size: 300%;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<div id="body">
+			<div id="message"></div>
+		</div>
+		
+		<div id="content" style="display: none; margin: 1em;"></div>
+		
+		<script>
+		$(document).ready(function() {
+		
+			// generate some content
+			for (var i = 0; i < 100; i++) {
+				$('#content').clone().text('Content item ' + i).show().appendTo($('#body'));
+			}
+			
+			$(document).scroll(function(e) {
+				var scrollTop = $(window).scrollTop();
+				$('#message').text('Scroll Top: ' + scrollTop);
+			});
+		});
+		</script>
+	</body>
+</html>
