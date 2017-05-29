@@ -10,6 +10,10 @@ Here's a photo of the script in action
 
 ![](https://github.com/ikromin/misc/blob/master/dietpi/odroid_show2/photo.jpg)
 
+There is also a portrait version of the script (*status_portrait.sh*) available that looks like this:
+
+![](https://github.com/ikromin/misc/blob/master/dietpi/odroid_show2/photo_portrait.jpg)
+
 Below is a sample output of the script -
 
 ```
