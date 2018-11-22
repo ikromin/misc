@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>Image Decode Example</title>
+</head>
+<body>
+	Image Decode Example
+	
+	<script>
+	var img = new Image();
+    img.onload = function() {
+    	
+    	var imgSize = img.width;
+    	
+    	var canvas = document.createElement('canvas');
+		canvas.width = canvas.height = imgSize;
+		var ctx = canvas.getContext('2d');
+		ctx.drawImage(img, 0, 0);
+    	
+    	var headerData = ctx.getImageData(0, 0, 1, 1);
+    	var dataSize = headerData.data[0];
+    	
+    	var imageData = ctx.getImageData(0, 1, dataSize, dataSize);
+		var paddedData = imageData.data;
+		var uint8array = new Uint8Array(paddedData.length / 4 * 3);
+        
+        var idx = 0;
+		for (var i = 0; i < paddedData.length - 1; i += 4) {
+			var subArray = paddedData.subarray(i, i + 3);
+			uint8array.set(subArray, idx);
+			idx += 3;
+		}
+		
+		var includeBytes = uint8array.length;
+		for (var i = uint8array.length - 1; i > 0; i--) {
+			if (uint8array[i] == 0) {
+				includeBytes--;
+			}
+			else {
+				break;
+			}
+		}
+		
+		var data = uint8array.subarray(0, includeBytes);
+        var strData = (new TextDecoder('utf-8')).decode(data);
+        
+    	console.log(strData);
+    };
+    
+	img.src = 'image.png';
+	</script>
+</body>

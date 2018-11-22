@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+   <meta charset="utf-8">
+   <title>Image Encode Example</title>
+   
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+</head>
+<body>
+	Image Encode Example
+	
+	<script>
+		var myObjData = {
+			//a: 'The quick brown fox jumps over the lazy dog',
+			//b: 'The quick brown fox jumps over the lazy dog',
+			//c: 'The quick brown fox jumps over the lazy dog'
+		};
+		
+		for (var i = 0; i < 3700; i++) {
+			myObjData[i] = 'The quick brown fox jumps over the lazy dog'
+		}
+		
+		var strData = JSON.stringify(myObjData);
+		var uint8array = (new TextEncoder('utf-8')).encode(strData);
+		var dataSize = Math.ceil(Math.sqrt(uint8array.length / 3));
+		
+		var paddedData = new Uint8ClampedArray(dataSize * dataSize * 4);
+		var idx = 0;
+		for (var i = 0; i < uint8array.length; i += 3) {
+		  var subArray = uint8array.subarray(i, i + 3);
+		  paddedData.set(subArray, idx);
+		  paddedData.set([255], idx + 3);
+		  idx += 4;
+		}
+		
+		var imageData = new ImageData(paddedData, dataSize, dataSize);
+		
+		var imgSize = 256;
+		var canvas = document.createElement('canvas');
+		canvas.width = canvas.height = imgSize;
+		var ctx = canvas.getContext('2d');
+
+		ctx.fillStyle = '#AA0000';
+		ctx.fillRect(0, 0, imgSize, imgSize);
+		
+		ctx.fillStyle = 'rgb(' + dataSize +',0,0)';
+		ctx.fillRect(0, 0, 1, 1);
+		
+		ctx.putImageData(imageData, 0, 1);
+		
+		$('body').append('<a id="hiddenLink" href="' + canvas.toDataURL() +
+		  '" style="display:none;" download="image.png">Download</a>');
+		var link = $('#hiddenLink')[0];
+		link.click();
+		link.remove();
+	
+	</script>
+</body>
